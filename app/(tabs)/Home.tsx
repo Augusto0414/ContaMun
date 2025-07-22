@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable } from "react-native";
-import { DartSvg, LossChartSvg, MoneySvg, PocketSvg, WalletSvg } from "../../components/Icons";
+import { DartSvg, LossChartSvg, MoneySvg, PocketSvg, PresentationChartSvg, WalletSvg } from "../../components/Icons";
 import { BudgetInfoCard } from "../../components/BudgetInfoCard";
 import { FinanceCard } from "../../components/FinanceCard";
 export default function HomePage() {
@@ -45,6 +45,9 @@ export default function HomePage() {
                                 color="#3B82F6" />
                         </View>
                     </View>
+
+                    {/*Metas de ahorro */}
+
                     <View className="px-4 mt-6">
                         <View className="w-full flex justify-between flex-row items-center">
                             <View>
@@ -70,6 +73,18 @@ export default function HomePage() {
                             <Pressable className="*:mt-4 px-4 py-4 bg-blue-600 rounded-lg flex items-center justify-center">
                                 <Text className="text-white">Agregar</Text>
                             </Pressable>
+                        </View>
+                    </View>
+                    {/*Gastos */}
+                    <View className="py-4 px-4">
+                        <View className="w-full flex flex-row items-center justify-between mt-4">
+                            <View>
+                                <Text className="text-2xl font-bold">Gastos</Text>
+                                <Text className="text-base text-gray-500">Controla tus gastos mensuales</Text>
+                            </View>
+                            <View>
+                                <PresentationChartSvg />
+                            </View>
                         </View>
                     </View>
                 </View>
