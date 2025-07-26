@@ -5,13 +5,20 @@ import { useState } from 'react';
 interface SectionCardProps {
     title: string;
     subtitle: string;
-    Icon: React.ComponentType<any>;
+    Icon: React.ComponentType<any> | React.ReactNode;
     children?: React.ReactNode;
     empty?: boolean;
     emptyText?: string;
     subEmptyText?: string;
     buttonText?: string;
     showAddButton?: boolean;
+    ModalTitle?: string;
+    ModalSubtitle?: string;
+    placeHolderTitle: string;
+    placeHolderAmount: string;
+    colorTitle?: string;
+    colorSubtitle?: string;
+    colorButton?: string;
 }
 
 const SectionCard = ({
@@ -24,6 +31,14 @@ const SectionCard = ({
     subEmptyText,
     buttonText = 'Agregar',
     showAddButton = true,
+    ModalTitle,
+    ModalSubtitle,
+    placeHolderTitle,
+    placeHolderAmount,
+    colorTitle = 'text-gray-600',
+    colorSubtitle = 'text-gray-500',
+    colorButton = 'bg-blue-600',
+
 }: SectionCardProps) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -40,11 +55,13 @@ const SectionCard = ({
             <View className="py-4 px-4">
                 <View className="w-full flex flex-row items-center justify-between mt-4">
                     <View>
-                        <Text className="text-2xl text-gray-600 font-bold">{title}</Text>
-                        <Text className="text-base text-gray-500">{subtitle}</Text>
+                        <Text className={`text-2xl ${colorTitle} font-bold`}>{title}</Text>
+                        <Text className={`text-base ${colorSubtitle}`}>{subtitle}</Text>
                     </View>
                     <View>
-                        <Icon />
+                        {typeof Icon === 'function'
+                            ? <Icon />
+                            : Icon}
                     </View>
                 </View>
 
@@ -78,7 +95,14 @@ const SectionCard = ({
                 </View>
             </View>
 
-            <ModalForm visible={isModalVisible} onClose={handleCloseModal} />
+            <ModalForm
+                title={ModalTitle}
+                subtitle={ModalSubtitle}
+                visible={isModalVisible}
+                onClose={handleCloseModal}
+                placeholderTitle={placeHolderTitle}
+                placeholderAmount={placeHolderAmount}
+            />
         </>
     );
 };

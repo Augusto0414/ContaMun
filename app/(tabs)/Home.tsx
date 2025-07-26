@@ -4,6 +4,7 @@ import { BudgetInfoCard } from "../../components/BudgetInfoCard";
 import { FinanceCard } from "../../components/FinanceCard";
 import { useState } from "react";
 import SectionCard from "../../components/SectionCard";
+import FabButton from "../../components/FabButton";
 export default function HomePage() {
     const [modalVisible, setModalVisible] = useState(false);
     const [savingGoals, setSavingGoals] = useState([
@@ -21,8 +22,8 @@ export default function HomePage() {
         <>
             <ScrollView className="flex-1 bg-white">
                 <View>
-                    <View className="w-full px-4 flex flex-row items-center justify-between mb-6">
-                        <View>
+                    <View className="w-full px-4 py-4 flex flex-row items-center justify-between mb-6">
+                        <View >
                             <Text className="text-2xl font-bold">Resumen financiero</Text>
                             <Text className="text-base text-gray-500">Resumen de tu situación financiera</Text>
                         </View>
@@ -69,6 +70,10 @@ export default function HomePage() {
                         emptyText="Aún no tienes metas de ahorro registradas"
                         subEmptyText="Empieza agregando una para visualizar tu progreso"
                         buttonText="Agregar meta"
+                        ModalSubtitle="Define una meta de ahorro para alcanzar tus objetivos financieros"
+                        ModalTitle="Agregar Meta de Ahorro"
+                        placeHolderTitle="Título de la meta"
+                        placeHolderAmount="Monto de la meta"
                     >
                         {savingGoals.map((goal, index) => (
                             <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
@@ -81,28 +86,41 @@ export default function HomePage() {
                     </SectionCard>
 
                     {/*Gastos */}
+                    <View className="px-4">
+                        <View className="relative 
+                          w-full bg-blue-950 rounded-2xl p-6 overflow-hidden shadow-lg my-4">
+                            <SectionCard
+                                title="Gastos"
+                                subtitle="Controla tus gastos mensuales"
+                                Icon={<PresentationChartSvg width={24} height={24} color="#fff" />}
+                                empty={savingGoals.length === 0}
+                                emptyText="Aún no tienes metas de ahorro registradas"
+                                subEmptyText="Empieza agregando una para visualizar tu progreso"
+                                buttonText="Agregar gastos"
+                                ModalSubtitle="Establece un límite de gasto para mantener tus finanzas bajo control"
+                                ModalTitle="Agregar Límite de Gasto"
+                                placeHolderTitle="Título del gasto"
+                                placeHolderAmount="Monto del gasto"
+                                colorTitle="text-white"
+                                colorSubtitle="text-gray-300"
+                            >
+                                {savingGoals.map((goal, index) => (
+                                    <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
+                                        <View className="flex flex-row justify-between items-center">
+                                            <Text className="text-lg text-gray-300">{goal.title}</Text>
+                                            <Text className="text-lg text-gray-300">${goal.amount.toLocaleString()}</Text>
+                                        </View>
+                                    </View>
+                                ))}
+                            </SectionCard>
+                            <View className="absolute top-0 left-0 w-0 h-0 border-l-[60px] border-l-transparent border-b-[60px] border-b-white opacity-10" />
+                            <View className="absolute bottom-0 right-0 w-0 h-0 border-r-[60px] border-r-transparent border-t-[60px] border-t-white opacity-10" />
 
-                    <SectionCard
-                        title="Gastos"
-                        subtitle="Controla tus gastos mensuales"
-                        Icon={PresentationChartSvg}
-                        empty={savingGoals.length === 0}
-                        emptyText="Aún no tienes metas de ahorro registradas"
-                        subEmptyText="Empieza agregando una para visualizar tu progreso"
-                        buttonText="Agregar meta"
-                    >
-                        {savingGoals.map((goal, index) => (
-                            <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
-                                <View className="flex flex-row justify-between items-center">
-                                    <Text className="text-lg text-gray-300">{goal.title}</Text>
-                                    <Text className="text-lg text-gray-300">${goal.amount.toLocaleString()}</Text>
-                                </View>
-                            </View>
-                        ))}
-                    </SectionCard>
-
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
+            <FabButton />
         </>
     );
 }

@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { HeaderUser } from "../components/HeaderUser";
 export default function Layout() {
     return (
         <>
@@ -6,7 +7,7 @@ export default function Layout() {
                 screenOptions={{
                     headerShown: true,
                     headerShadowVisible: false,
-                    headerTitle: "",
+                    headerTitle: () => <HeaderUser />,
                 }}
             />
         </>
