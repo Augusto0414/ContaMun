@@ -5,11 +5,17 @@ import { FinanceCard } from "../../components/FinanceCard";
 import { useState } from "react";
 import SectionCard from "../../components/SectionCard";
 export default function HomePage() {
+    const [modalVisible, setModalVisible] = useState(false);
     const [savingGoals, setSavingGoals] = useState([
         // Ejemplo:
         // { title: 'Viaje a la playa', amount: 500000 },
         // { title: 'Nuevo celular', amount: 1200000 },
     ]);
+
+    const handleAddGoal = (newGoal) => {
+        setSavingGoals([...savingGoals, newGoal]);
+        setModalVisible(false);
+    };
 
     return (
         <>
@@ -59,7 +65,6 @@ export default function HomePage() {
                         title="Metas de ahorro"
                         subtitle="Controla tus objetivos de ahorro"
                         Icon={DartSvg}
-                        onAdd={() => console.log('Agregar meta')}
                         empty={savingGoals.length === 0}
                         emptyText="Aún no tienes metas de ahorro registradas"
                         subEmptyText="Empieza agregando una para visualizar tu progreso"
@@ -81,7 +86,6 @@ export default function HomePage() {
                         title="Gastos"
                         subtitle="Controla tus gastos mensuales"
                         Icon={PresentationChartSvg}
-                        onAdd={() => console.log('Agregar meta')}
                         empty={savingGoals.length === 0}
                         emptyText="Aún no tienes metas de ahorro registradas"
                         subEmptyText="Empieza agregando una para visualizar tu progreso"
