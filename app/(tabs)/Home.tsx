@@ -1,8 +1,16 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { DartSvg, LossChartSvg, MoneySvg, PocketSvg, PresentationChartSvg, WalletSvg } from "../../components/Icons";
 import { BudgetInfoCard } from "../../components/BudgetInfoCard";
 import { FinanceCard } from "../../components/FinanceCard";
+import { useState } from "react";
+import SectionCard from "../../components/SectionCard";
 export default function HomePage() {
+    const [savingGoals, setSavingGoals] = useState([
+        // Ejemplo:
+        // { title: 'Viaje a la playa', amount: 500000 },
+        // { title: 'Nuevo celular', amount: 1200000 },
+    ]);
+
     return (
         <>
             <ScrollView className="flex-1 bg-white">
@@ -47,46 +55,48 @@ export default function HomePage() {
                     </View>
 
                     {/*Metas de ahorro */}
+                    <SectionCard
+                        title="Metas de ahorro"
+                        subtitle="Controla tus objetivos de ahorro"
+                        Icon={DartSvg}
+                        onAdd={() => console.log('Agregar meta')}
+                        empty={savingGoals.length === 0}
+                        emptyText="Aún no tienes metas de ahorro registradas"
+                        subEmptyText="Empieza agregando una para visualizar tu progreso"
+                        buttonText="Agregar meta"
+                    >
+                        {savingGoals.map((goal, index) => (
+                            <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
+                                <View className="flex flex-row justify-between items-center">
+                                    <Text className="text-lg text-gray-300">{goal.title}</Text>
+                                    <Text className="text-lg text-gray-300">${goal.amount.toLocaleString()}</Text>
+                                </View>
+                            </View>
+                        ))}
+                    </SectionCard>
 
-                    <View className="px-4 mt-6">
-                        <View className="w-full flex justify-between flex-row items-center">
-                            <View>
-                                <Text className="text-2xl text-gray-600 font-bold">Metas de ahorro</Text>
-                                <Text className="text-base text-gray-500">Controla tus objetivos de ahorro</Text>
-                            </View>
-                            <View>
-                                <DartSvg />
-                            </View>
-                        </View>
-                        <View className="w-full py-4 bg-dark-900">
-                            <View className="flex flex-row items-center justify-between px-4">
-                                <Text className="text-lg text-gray-300">Viaje a la playa</Text>
-                                <Text className="text-lg text-gray-300">$500.000</Text>
-                            </View>
-                            <View className="w-full h-px bg-gray-600 my-2" />
-                            <View className="flex flex-row items-center justify-between px-4">
-                                <Text className="text-lg text-gray-300">Nuevo celular</Text>
-                                <Text className="text-lg text-gray-300">$1.200.000</Text>
-                            </View>
-                        </View>
-                        <View className="py-4">
-                            <Pressable className="*:mt-4 px-4 py-4 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <Text className="text-white">Agregar</Text>
-                            </Pressable>
-                        </View>
-                    </View>
                     {/*Gastos */}
-                    <View className="py-4 px-4">
-                        <View className="w-full flex flex-row items-center justify-between mt-4">
-                            <View>
-                                <Text className="text-2xl font-bold">Gastos</Text>
-                                <Text className="text-base text-gray-500">Controla tus gastos mensuales</Text>
+
+                    <SectionCard
+                        title="Gastos"
+                        subtitle="Controla tus gastos mensuales"
+                        Icon={PresentationChartSvg}
+                        onAdd={() => console.log('Agregar meta')}
+                        empty={savingGoals.length === 0}
+                        emptyText="Aún no tienes metas de ahorro registradas"
+                        subEmptyText="Empieza agregando una para visualizar tu progreso"
+                        buttonText="Agregar meta"
+                    >
+                        {savingGoals.map((goal, index) => (
+                            <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
+                                <View className="flex flex-row justify-between items-center">
+                                    <Text className="text-lg text-gray-300">{goal.title}</Text>
+                                    <Text className="text-lg text-gray-300">${goal.amount.toLocaleString()}</Text>
+                                </View>
                             </View>
-                            <View>
-                                <PresentationChartSvg />
-                            </View>
-                        </View>
-                    </View>
+                        ))}
+                    </SectionCard>
+
                 </View>
             </ScrollView>
         </>
