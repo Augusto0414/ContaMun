@@ -31,7 +31,7 @@ export default function HomePage() {
                             <WalletSvg color={"#fff"} />
                         </View>
                     </View>
-                    <View className="px-4 bg-gray-700 mx-2 py-6 rounded-2xl shadow-lg">
+                    <View className="px-4 bg-blue-950 mx-2 py-6 rounded-2xl shadow-lg">
                         <View className="w-full flex justify-around flex-row mb-4">
                             <FinanceCard
                                 title="Ingresos"
@@ -59,6 +59,9 @@ export default function HomePage() {
                                 percentage={"59% libre"}
                                 color="#3B82F6" />
                         </View>
+                        <View className="absolute top-0 left-0 w-0 h-0 border-l-[60px] border-l-transparent border-b-[60px] border-b-white opacity-10" />
+                        <View className="absolute bottom-0 right-0 w-0 h-0 border-r-[60px] border-r-transparent border-t-[60px] border-t-white opacity-10" />
+
                     </View>
 
                     {/*Metas de ahorro */}
