@@ -9,12 +9,12 @@ export default function RegisterPage() {
         <>
             <View className="bg-white flex-1 px-5">
                 <Pressable
-                    className="h-5 w-5 mb-5"
+                    className="h-5 w-5 mb-2"
                     onPress={() => router.back()}
                 >
-                    <View className="bg-gray-300 p-8 rounded-lg absolute top-1 left-0">
+                    <View className="bg-gray-300 p-6 rounded-lg absolute top-1 left-0">
                         <View className='flex justify-center items-center'>
-                            <ArrowBackSvg width={32} height={32} />
+                            <ArrowBackSvg width={24} height={24} />
                         </View>
                     </View>
                 </Pressable>
@@ -29,6 +29,7 @@ export default function RegisterPage() {
                             className="ml-3 flex-1 text-base"
                             placeholder="name"
                             keyboardType="default"
+
                         />
                     </View>
                     <View className="flex-row items-center border border-gray-300 px-4 py-3 rounded-2xl mb-6">
