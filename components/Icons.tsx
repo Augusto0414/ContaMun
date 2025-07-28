@@ -173,3 +173,125 @@ export const PresentationChartSvg = ({
         />
     </Svg>
 );
+
+
+export const EmailSvg = ({
+    width = 24,
+    height = 24,
+    strokeWidth = 1.5,
+    color = "#1C274C",
+    ...props
+}: SvgProps) => (
+    <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        width={width}
+        height={height}
+        stroke={color}
+        viewBox="0 0 24 24"
+        {...props}
+    >
+        <Path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={strokeWidth}
+            d="m7 8.5 2.942 1.74c1.715 1.014 2.4 1.014 4.116 0L17 8.5"
+        />
+        <Path
+            strokeLinejoin="round"
+            strokeWidth={strokeWidth}
+            d="M2.016 13.476c.065 3.065.098 4.598 1.229 5.733 1.131 1.136 2.705 1.175 5.854 1.254 1.94.05 3.862.05 5.802 0 3.149-.079 4.723-.118 5.854-1.254 1.131-1.135 1.164-2.668 1.23-5.733.02-.986.02-1.966 0-2.952-.066-3.065-.099-4.598-1.23-5.733-1.131-1.136-2.705-1.175-5.854-1.254a115.11 115.11 0 0 0-5.802 0c-3.149.079-4.723.118-5.854 1.254-1.131 1.135-1.164 2.668-1.23 5.733a69.07 69.07 0 0 0 0 2.952Z"
+        />
+    </Svg>
+);
+
+export const LockSvg = ({
+    width = 24,
+    height = 24,
+    color = "#1C274C",
+    strokeWidth = 1.5,
+    ...props
+}: SvgProps) => (
+    <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        width={width}
+        height={height}
+        stroke={color}
+        {...props}
+    >
+        <Path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={strokeWidth}
+            d="M14.491 15.5h.009m-5 0h.009"
+        />
+        <Path
+            strokeWidth={strokeWidth}
+            d="M4.268 18.845c.225 1.67 1.608 2.979 3.292 3.056 1.416.065 2.855.099 4.44.099 1.585 0 3.024-.034 4.44-.1 1.684-.076 3.067-1.385 3.292-3.055.147-1.09.268-2.207.268-3.345 0-1.138-.121-2.255-.268-3.345-.225-1.67-1.608-2.979-3.292-3.056A95.434 95.434 0 0 0 12 9c-1.585 0-3.024.034-4.44.1-1.684.076-3.067 1.385-3.292 3.055C4.12 13.245 4 14.362 4 15.5c0 1.138.121 2.255.268 3.345Z"
+        />
+        <Path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={strokeWidth}
+            d="M7.5 9V6.5a4.5 4.5 0 0 1 9 0V9"
+        />
+    </Svg>
+);
+
+
+export const ArrowBackSvg = ({
+    width = 24,
+    height = 24,
+    color = "#141B34",
+    strokeWidth = 1.5,
+    ...props
+}: SvgProps) => (
+    <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        width={width}
+        height={height}
+        stroke={color}
+        {...props}
+    >
+        <Path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={strokeWidth}
+            d="M15 6s-6 4.419-6 6c0 1.581 6 6 6 6"
+        />
+    </Svg>
+);
+
+
+export const UserSvg = ({
+    width = 24,
+    height = 24,
+    color = "#1C274C",
+    strokeWidth = 1.5,
+    ...props
+}: SvgProps) => (
+    <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        width={width}
+        height={height}
+        {...props}
+    >
+        <Path
+            stroke={color}
+            strokeWidth={strokeWidth}
+            d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+        />
+        <Path
+            stroke={color}
+            strokeLinejoin="round"
+            strokeWidth={strokeWidth}
+            d="M14 14h-4a5 5 0 0 0-5 5 2 2 0 0 0 2 2h10a2 2 0 0 0 2-2 5 5 0 0 0-5-5Z"
+        />
+    </Svg>
+);
