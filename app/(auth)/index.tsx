@@ -2,6 +2,7 @@ import { View, Text, TextInput, Pressable } from "react-native";
 import { EmailSvg, LockSvg } from "../../components/Icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { authStore } from "../../store/authStore";
 
 interface FormData {
     email?: string;
@@ -17,6 +18,7 @@ export default function AuthIndex() {
     const router = useRouter();
     const [formData, setFormData] = useState<FormData>({});
     const [errors, setErrors] = useState<Errors>({});
+    const { login, status } = authStore();
 
     const handleInputChange = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
@@ -33,6 +35,13 @@ export default function AuthIndex() {
     };
 
     const hasErrors = Object.values(errors).some(e => e !== '');
+
+    const handleLogin = async () => {
+        await login(formData.email, formData.password);
+        if (status === "authenticated") {
+            router.push("/(tabs)/home");
+        }
+    };
 
     return (
         <View className="bg-white flex-1 px-5">
@@ -81,6 +90,8 @@ export default function AuthIndex() {
             </View>
 
             <Pressable
+                disabled={hasErrors}
+                onPress={handleLogin}
                 style={{
                     shadowColor: '#172554',
                     elevation: 10,
@@ -96,7 +107,6 @@ export default function AuthIndex() {
             <View className="flex flex-row items-center justify-center mt-11">
                 <Text className="text-gray-500 text-sm">¿No tienes una cuenta?</Text>
                 <Pressable
-                    disabled={hasErrors}
                     onPress={() => router.push("/(auth)/register")}
                 >
                     <Text className="text-blue-950 text-sm ml-2">Regístrate</Text>

@@ -8,5 +8,11 @@ module.exports = defineConfig([
   prettierConfig,
   {
     ignores: ["dist/*"],
-  }
+  },
+  {
+    files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
+    rules: {
+      'import/no-unresolved': ['error', { ignore: ['^@env$'] }],
+    },
+  },
 ]);

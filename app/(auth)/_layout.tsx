@@ -1,4 +1,4 @@
-import { Slot, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 
 export default function AuthLayout() {
@@ -12,7 +12,13 @@ export default function AuthLayout() {
         checkSession();
     }, []);
 
-    return <Slot />
+    return <Stack
+        screenOptions={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: () => "",
+        }}
+    />
 
 
 }
