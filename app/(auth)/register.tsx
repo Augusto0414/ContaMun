@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,6 +14,8 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ArrowBackSvg, EmailSvg, LockSvg, UserSvg } from "../../components/Icons";
+import { showToast } from "../../helpers/showToast";
+import { useAuthStore } from "../../store/authStore";
 
 interface FormData {
   name?: string;
@@ -32,7 +35,23 @@ export default function RegisterPage() {
   const insets = useSafeAreaInsets();
   const [formData, setFormData] = useState<FormData>({});
   const [errors, setErrors] = useState<Errors>({});
+  const { authMessage, authState, createUser } = useAuthStore();
   const router = useRouter();
+
+  useEffect(() => {
+    if (authState === "sucess") {
+      setFormData(Object.fromEntries(Object.keys(formData).map((key) => [key, ""])));
+      setTimeout(() => {
+        showToast(authMessage);
+      }, 20000);
+    }
+
+    if (authState === "error") {
+      setTimeout(() => {
+        showToast(authMessage || "Ocurrió un error");
+      }, 20000);
+    }
+  }, [authState, formData, authMessage]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
@@ -63,6 +82,12 @@ export default function RegisterPage() {
   };
 
   const hasErrors = Object.values(errors).some((e) => e !== "");
+
+  const handleRegister = async () => {
+    const { name, email, password } = formData;
+    if (hasErrors) return;
+    await createUser({ name, email, password });
+  };
 
   return (
     <SafeAreaView
@@ -158,7 +183,8 @@ export default function RegisterPage() {
             </View>
 
             <Pressable
-              disabled={hasErrors}
+              disabled={hasErrors || authState === "loading"}
+              onPress={handleRegister}
               style={{
                 shadowColor: "#172554",
                 elevation: 10,
@@ -167,9 +193,13 @@ export default function RegisterPage() {
                 shadowRadius: 10,
                 opacity: hasErrors ? 0.6 : 1,
               }}
-              className="bg-blue-950 p-5 rounded-2xl mt-11"
+              className="bg-blue-950 p-5 rounded-2xl mt-11 items-center justify-center"
             >
-              <Text className="text-white text-center">Registrar</Text>
+              {authState === "loading" ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text className="text-white text-center">Registrar</Text>
+              )}
             </Pressable>
 
             <View className="my-10" />

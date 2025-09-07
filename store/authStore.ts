@@ -19,8 +19,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   authMessage: null,
   authIsError: false,
   createUser: async ({ name, email, password }) => {
+    set({ authState: "loading" });
     try {
-      set({ authState: "loading" });
       const { message } = await authService.registerUser({ name, email, password });
       set({ authMessage: message, authIsError: false, authState: "sucess", user: null });
     } catch (error: any) {
@@ -30,8 +30,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
   login: async ({ email, password }) => {
+    set({ authState: "loading" });
     try {
-      set({ authState: "loading" });
       const { message, user } = await authService.login({ email, password });
       set({ authState: "sucess", authIsError: false, authMessage: message, user });
     } catch (error: any) {

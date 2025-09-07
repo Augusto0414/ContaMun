@@ -17,6 +17,7 @@ interface Errors {
 export default function AuthIndex() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+
   const [formData, setFormData] = useState<FormData>({});
   const [errors, setErrors] = useState<Errors>({});
 
