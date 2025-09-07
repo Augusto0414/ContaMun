@@ -7,13 +7,8 @@ import {
   User,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { UserRequest } from "../interface/user";
 import { auth, db } from "../utils/firebase";
-
-export interface UserRequest {
-  name: string;
-  email: string;
-  password: string;
-}
 
 class AuthService {
   registerUser = async ({ name, email, password }: UserRequest): Promise<{ message: string }> => {
