@@ -1,24 +1,16 @@
-import { Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
-
+import { Stack } from "expo-router";
+import React from "react";
 export default function AuthLayout() {
-    const router = useRouter();
-
-    useEffect(() => {
-        const checkSession = async () => {
-            const token = "";
-            if (token) return router.replace("/(tabs)/home");
-        }
-        checkSession();
-    }, []);
-
-    return <Stack
-        screenOptions={{
-            headerShown: true,
-            headerShadowVisible: false,
-            headerTitle: () => "",
-        }}
-    />
-
-
+  return (
+    <Stack
+      initialRouteName="index"
+      screenOptions={{
+        headerShown: false,
+        headerShadowVisible: false,
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: "Login" }} />
+      <Stack.Screen name="register" options={{ title: "Registro" }} />
+    </Stack>
+  );
 }

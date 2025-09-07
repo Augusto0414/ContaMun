@@ -1,80 +1,63 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from "../api/config";
+import {
+  createUserWithEmailAndPassword,
+  reload,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  updateProfile,
+  User,
+} from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../utils/firebase";
 
-interface User {
-  id: string;
-  email: string;
+export interface UserRequest {
   name: string;
+  email: string;
+  password: string;
 }
 
-interface LoginResponsePayload {
-  response: {
-    id: string;
-    userName: string;
-    email: string;
+class AuthService {
+  registerUser = async ({ name, email, password }: UserRequest): Promise<{ message: string }> => {
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(user, { displayName: name });
+      await sendEmailVerification(user);
+      await setDoc(doc(db, "user", user.uid), {
+        name,
+        email,
+        password,
+        createAt: new Date(),
+        verify: false,
+      });
+      return { message: "Te registraste. Revisa tu correo y haz clic en verificar." };
+    } catch (error: any) {
+      const errorMessage =
+        error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
+      return { message: errorMessage };
+    }
   };
-  token: string;
-}
 
-interface ApiLoginResponse {
-  error: boolean;
-  code: number;
-  message: string;
-  body: LoginResponsePayload;
-}
-
-export class AuthService {
-  static async login(email: string, password: string): Promise<{ body: User; token: string }> {
+  login = async ({ email, password }: Omit<UserRequest, "name">): Promise<{ message: string; user: User }> => {
     try {
-      const { data } = await api.post<ApiLoginResponse>("/auth/login", { email, password });
-      if (data.error) {
-        throw new Error(data.message || "Error en login");
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      await reload(user);
+
+      if (!user.emailVerified) {
+        return { message: "Aún no verificaste tu correo. Revisa tu bandeja o reenvía el correo", user: null };
       }
-
-      const userData = data.body.response;
-      const token = data.body.token;
-
-      const user: User = {
-        id: userData.id,
-        email: userData.email,
-        name: userData.userName,
-      };
-
-      await AsyncStorage.multiSet([
-        ["token", token],
-        ["user", JSON.stringify(user)],
-      ]);
-
-      return {
-        body: user,
-        token,
-      };
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.message || "Error de autenticación";
-      throw new Error(msg);
+      return { message: "Verificación exitosa", user };
+    } catch (error: any) {
+      const errorMessage =
+        error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
+      return { message: errorMessage, user: null };
     }
-  }
-
-  static async checkAuth(): Promise<boolean> {
-    const token = await AsyncStorage.getItem("token");
-    return !!token;
-  }
-
-  static async getToken(): Promise<string | null> {
-    return AsyncStorage.getItem("token");
-  }
-
-  static async getUser(): Promise<User | null> {
-    const userStr = await AsyncStorage.getItem("user");
-    if (!userStr) return null;
-    try {
-      return JSON.parse(userStr) as User;
-    } catch {
-      return null;
-    }
-  }
-
-  static async logout(): Promise<void> {
-    await AsyncStorage.multiRemove(["token", "user"]);
-  }
+  };
+  resendVerificationEmail = async (): Promise<{ message: string }> => {
+    const user = auth.currentUser;
+    if (!user) return { message: "Usuario no conectado" };
+    if (user.emailVerified) return { message: "Usuario verificado" };
+    await sendEmailVerification(user);
+    return { message: "Correo de verificación enviado..." };
+  };
 }
+
+export const authService = new AuthService();
