@@ -1,8 +1,10 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { EmailSvg, LockSvg } from "../../components/Icons";
+import { showToast } from "../../helpers/showToast";
+import { useAuthStore } from "../../store/authStore";
 
 interface FormData {
   email?: string;
@@ -20,6 +22,7 @@ export default function AuthIndex() {
 
   const [formData, setFormData] = useState<FormData>({});
   const [errors, setErrors] = useState<Errors>({});
+  const { login, authState, authMessage } = useAuthStore();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
@@ -37,7 +40,22 @@ export default function AuthIndex() {
 
   const hasErrors = Object.values(errors).some((e) => e !== "");
 
-  const handleLogin = async () => {};
+  useEffect(() => {
+    if (authState === "sucess") {
+      Object.entries(Object.keys(formData).map((key) => [key, ""]));
+      router.push("/(tabs)/home");
+      showToast(authMessage);
+    }
+    if (authState === "error") {
+      showToast(authMessage || "Lo sentimos ocurrio un promeble");
+    }
+  }, [authState, authMessage, formData, router]);
+
+  const handleLogin = async () => {
+    const { email, password } = formData;
+    if (hasErrors) return;
+    await login({ email, password });
+  };
 
   return (
     <SafeAreaView
@@ -100,7 +118,7 @@ export default function AuthIndex() {
         </View>
 
         <Pressable
-          disabled={hasErrors}
+          disabled={hasErrors || authState === "loading"}
           onPress={handleLogin}
           style={{
             shadowColor: "#172554",
@@ -109,9 +127,13 @@ export default function AuthIndex() {
             shadowOpacity: 0.4,
             shadowRadius: 10,
           }}
-          className="bg-blue-950 p-5 rounded-2xl"
+          className="bg-blue-950 p-5 rounded-2xl mt-11 items-center justify-center"
         >
-          <Text className="text-white text-center">Login</Text>
+          {authState === "loading" ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text className="text-white text-center">Iniciar sesión</Text>
+          )}
         </Pressable>
 
         <View className="flex flex-row items-center justify-center mt-11">

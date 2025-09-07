@@ -9,8 +9,9 @@ interface AuthState {
   authMessage: string | null;
   authIsError: boolean;
   createUser: ({ name, email, password }: UserRequest) => Promise<void>;
-  login: ({ email, password }: UserRequest) => Promise<void>;
+  login: ({ email, password }: Omit<UserRequest, "name">) => Promise<void>;
   resendVerificationEmail: () => Promise<void>;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -50,5 +51,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
       set({ authIsError: true, authMessage: errorMessage, authState: "error", user: null });
     }
+  },
+  logout() {
+    set({ authIsError: false, authMessage: null, authState: "idle", user: null });
   },
 }));

@@ -41,15 +41,11 @@ export default function RegisterPage() {
   useEffect(() => {
     if (authState === "sucess") {
       setFormData(Object.fromEntries(Object.keys(formData).map((key) => [key, ""])));
-      setTimeout(() => {
-        showToast(authMessage);
-      }, 20000);
+      showToast(authMessage);
     }
 
     if (authState === "error") {
-      setTimeout(() => {
-        showToast(authMessage || "Ocurrió un error");
-      }, 20000);
+      showToast(authMessage || "Ocurrió un error");
     }
   }, [authState, formData, authMessage]);
 

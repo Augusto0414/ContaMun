@@ -4,27 +4,11 @@ import { GraphSvg, HomeSvg } from "../../components/Icons";
 import "../../global.css";
 
 export default function TabLayout() {
-  //   const router = useRouter();
-
-  //   useEffect(() => {
-  //     if (status === "not-authenticated") {
-  //       router.replace("/(auth)/");
-  //     }
-  //   }, [status, router]);
-
-  //   if (status === "checking") {
-  //     return (
-  //       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //         <ActivityIndicator size="large" />
-  //       </View>
-  //     );
-  //   }
-
   return (
     <Tabs
       initialRouteName="home"
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         tabBarActiveTintColor: "indigo",
         headerShadowVisible: false,
         headerTitle: () => <HeaderUser />,
