@@ -39,7 +39,7 @@ export default function RegisterPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (authState === "sucess") {
+    if (authState === "success") {
       setFormData(Object.fromEntries(Object.keys(formData).map((key) => [key, ""])));
       showToast(authMessage);
     }

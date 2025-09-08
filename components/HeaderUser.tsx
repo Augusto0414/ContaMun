@@ -11,7 +11,7 @@ export const HeaderUser = () => {
       </View>
       <View className="ml-2">
         <Text className="text-2xl font-semibold">Bienvenido</Text>
-        <Text className="text-sm text-gray-500">{user.displayName} </Text>
+        <Text className="text-sm text-gray-500">{user.email} </Text>
       </View>
     </View>
   );

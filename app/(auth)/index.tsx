@@ -41,9 +41,9 @@ export default function AuthIndex() {
   const hasErrors = Object.values(errors).some((e) => e !== "");
 
   useEffect(() => {
-    if (authState === "sucess") {
+    if (authState === "authenticated") {
       Object.fromEntries(Object.keys(formData).map((key) => [key, ""]));
-      router.push("/(tabs)/home");
+      router.replace("/(tabs)");
       showToast(authMessage);
     }
     if (authState === "error") {
