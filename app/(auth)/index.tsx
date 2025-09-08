@@ -42,7 +42,7 @@ export default function AuthIndex() {
 
   useEffect(() => {
     if (authState === "sucess") {
-      Object.entries(Object.keys(formData).map((key) => [key, ""]));
+      Object.fromEntries(Object.keys(formData).map((key) => [key, ""]));
       router.push("/(tabs)/home");
       showToast(authMessage);
     }
