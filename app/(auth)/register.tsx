@@ -13,9 +13,9 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ArrowBackSvg, EmailSvg, LockSvg, UserSvg } from "../../components/Icons";
-import { showToast } from "../../helpers/showToast";
-import { useAuthStore } from "../../store/authStore";
+import { ArrowBackSvg, EmailSvg, LockSvg, UserSvg } from "../../src/components/Icons";
+import { showToast } from "../../src/helpers/showToast";
+import { useAuthStore } from "../../src/store/authStore";
 
 interface FormData {
   name?: string;

@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
-import { HeaderUser } from "../../components/HeaderUser";
-import { GraphSvg, HomeSvg } from "../../components/Icons";
 import "../../global.css";
+import { HeaderUser } from "../../src/components/HeaderUser";
+import { GraphSvg, HomeSvg } from "../../src/components/Icons";
 
 export default function TabLayout() {
   return (

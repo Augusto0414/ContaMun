@@ -2,9 +2,9 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { EmailSvg, LockSvg } from "../../components/Icons";
-import { showToast } from "../../helpers/showToast";
-import { useAuthStore } from "../../store/authStore";
+import { EmailSvg, LockSvg } from "../../src/components/Icons";
+import { showToast } from "../../src/helpers/showToast";
+import { useAuthStore } from "../../src/store/authStore";
 
 interface FormData {
   email?: string;

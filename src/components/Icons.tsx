@@ -180,3 +180,25 @@ export const UserSvg = ({ width = 24, height = 24, color = "#1C274C", strokeWidt
     />
   </Svg>
 );
+
+type SvgWithZise = SvgProps & { size?: number };
+
+export const CloseSvg = ({ size = 24, color = "#1C274C", ...props }: SvgWithZise) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    color={color}
+    width={size}
+    height={size}
+    {...props}
+  >
+    <Path
+      stroke="#141B34"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M11.947 21C7.006 21 3 16.97 3 12s4.006-9 8.947-9M17 8s4 2.946 4 4c0 1.054-4 4-4 4m3.5-4H9"
+    />
+  </Svg>
+);

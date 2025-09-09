@@ -1,5 +1,5 @@
-import { AnalyticsGraph } from "../../components/AnalyticsGraph";
+import { AnalyticsGraph } from "../../src/components/AnalyticsGraph";
 
 export default function Index() {
-    return <AnalyticsGraph />
+  return <AnalyticsGraph />;
 }
