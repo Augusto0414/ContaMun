@@ -14,6 +14,8 @@ type InputConfig = {
   value: string;
   placeholder: string;
   keyboardType: KeyboardTypeOptions;
+  multiline?: boolean;
+  numberOfLines?: number;
 };
 
 type CustomModalProps = ModalProps & {
@@ -46,13 +48,15 @@ export default function ModalForm({ visible, onClose, title, subtitle, initialIn
 
           {/* <TextInput className="w-full border border-gray-300 rounded-lg p-3 mb-4" placeholder={placeholderTitle} /> */}
 
-          {Object.entries(formInput).map(([key, { value, placeholder, keyboardType }]) => (
+          {Object.entries(formInput).map(([key, { value, placeholder, keyboardType, numberOfLines, multiline }]) => (
             <TextInput
               key={key}
-              className="w-full border border-gray-300 rounded-lg p-3 mb-4"
+              className={`${multiline ? "w-full border border-gray-300 rounded-lg p-3 mb-4 h-[120px]" : "w-full border border-gray-300 rounded-lg p-3 mb-4"}`}
               placeholder={placeholder}
               keyboardType={keyboardType}
               value={value}
+              multiline={multiline}
+              numberOfLines={numberOfLines}
               onChangeText={(text) =>
                 setFormInput((prev) => ({
                   ...prev,
