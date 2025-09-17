@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { BudgetInfoCard } from "../../src/components/BudgetInfoCard";
 import FabButton from "../../src/components/FabButton";
@@ -12,18 +11,9 @@ import {
   WalletSvg,
 } from "../../src/components/Icons";
 import SectionCard from "../../src/components/SectionCard";
+import { goalStore } from "../../src/store/goalStore";
 export default function HomePage() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [savingGoals, setSavingGoals] = useState([
-    // Ejemplo:
-    // { title: 'Viaje a la playa', amount: 500000 },
-    // { title: 'Nuevo celular', amount: 1200000 },
-  ]);
-
-  const handleAddGoal = (newGoal) => {
-    setSavingGoals([...savingGoals, newGoal]);
-    setModalVisible(false);
-  };
+  const { goals } = goalStore();
 
   return (
     <>
@@ -76,7 +66,7 @@ export default function HomePage() {
             title="Metas de ahorro"
             subtitle="Controla tus objetivos de ahorro"
             Icon={DartSvg}
-            empty={savingGoals.length === 0}
+            empty={goals.length === 0}
             emptyText="Aún no tienes metas de ahorro registradas"
             subEmptyText="Empieza agregando una para visualizar tu progreso"
             buttonText="Agregar meta"
@@ -84,8 +74,9 @@ export default function HomePage() {
             ModalTitle="Agregar Meta de Ahorro"
             placeHolderTitle="Título de la meta"
             placeHolderAmount="Monto de la meta"
+            type="income"
           >
-            {savingGoals.map((goal, index) => (
+            {goals.map((goal, index) => (
               <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
                 <View className="flex flex-row justify-between items-center">
                   <Text className="text-lg text-gray-300">{goal.title}</Text>
@@ -105,7 +96,7 @@ export default function HomePage() {
                 title="Gastos"
                 subtitle="Controla tus gastos mensuales"
                 Icon={<PresentationChartSvg width={24} height={24} color="#fff" />}
-                empty={savingGoals.length === 0}
+                empty={goals.length === 0}
                 emptyText="Aún no tienes metas de ahorro registradas"
                 subEmptyText="Empieza agregando una para visualizar tu progreso"
                 buttonText="Agregar gastos"
@@ -115,8 +106,9 @@ export default function HomePage() {
                 placeHolderAmount="Monto del gasto"
                 colorTitle="text-white"
                 colorSubtitle="text-gray-300"
+                type="expense"
               >
-                {savingGoals.map((goal, index) => (
+                {goals.map((goal, index) => (
                   <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
                     <View className="flex flex-row justify-between items-center">
                       <Text className="text-lg text-gray-300">{goal.title}</Text>

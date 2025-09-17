@@ -19,6 +19,7 @@ interface SectionCardProps {
   colorTitle?: string;
   colorSubtitle?: string;
   colorButton?: string;
+  type: "income" | "expense";
 }
 
 const SectionCard = ({
@@ -37,7 +38,7 @@ const SectionCard = ({
   placeHolderAmount,
   colorTitle = "text-gray-600",
   colorSubtitle = "text-gray-500",
-  colorButton = "bg-blue-600",
+  type,
 }: SectionCardProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -105,6 +106,7 @@ const SectionCard = ({
         visible={isModalVisible}
         onClose={handleCloseModal}
         initialInputs={initialInputs}
+        type={type}
       />
     </>
   );

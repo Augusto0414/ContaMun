@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   KeyboardTypeOptions,
   Modal,
   ModalProps,
@@ -9,6 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { showToast } from "../helpers/showToast";
+import { goalStore } from "../store/goalStore";
 
 type InputConfig = {
   value: string;
@@ -23,14 +26,47 @@ type CustomModalProps = ModalProps & {
   subtitle?: string;
   visible: boolean;
   initialInputs: Record<string, any>;
+  type: "income" | "expense";
   onClose: () => void;
 };
 
-export default function ModalForm({ visible, onClose, title, subtitle, initialInputs, ...rest }: CustomModalProps) {
+export default function ModalForm({
+  visible,
+  onClose,
+  title,
+  subtitle,
+  initialInputs,
+  type,
+  ...rest
+}: CustomModalProps) {
   const [formInput, setFormInput] = useState<Record<string, InputConfig>>(initialInputs);
+  const { savingGoal, goalState, resetGoal } = goalStore();
+
+  useEffect(() => {
+    if (goalState === "success") {
+      const { goalMessage } = goalStore.getState();
+      showToast(goalMessage);
+      setFormInput(initialInputs);
+      onClose();
+      resetGoal();
+    }
+    if (goalState === "error") {
+      const { goalMessage } = goalStore.getState();
+      showToast(goalMessage);
+      resetGoal();
+    }
+  }, [goalState, initialInputs, onClose, resetGoal]);
 
   const handleSubmit = () => {
-    onClose();
+    if (type === "income") {
+      savingGoal({
+        title: formInput.title.value,
+        description: formInput.description.value,
+        amount: Number(formInput.amount.value),
+      });
+    }
+    if (type === "expense") {
+    }
   };
 
   return (
@@ -45,8 +81,6 @@ export default function ModalForm({ visible, onClose, title, subtitle, initialIn
 
             {subtitle && <Text className="text-sm text-gray-600 mb-4">{subtitle}</Text>}
           </View>
-
-          {/* <TextInput className="w-full border border-gray-300 rounded-lg p-3 mb-4" placeholder={placeholderTitle} /> */}
 
           {Object.entries(formInput).map(([key, { value, placeholder, keyboardType, numberOfLines, multiline }]) => (
             <TextInput
@@ -66,8 +100,21 @@ export default function ModalForm({ visible, onClose, title, subtitle, initialIn
             />
           ))}
 
-          <Pressable className="w-full bg-blue-600 rounded-lg p-3 items-center justify-center" onPress={handleSubmit}>
-            <Text className="text-white font-semibold">Guardar</Text>
+          <Pressable
+            className="w-full bg-blue-600 rounded-lg p-3 items-center justify-center flex-row"
+            onPress={handleSubmit}
+            disabled={goalState === "loading"}
+          >
+            {goalState === "loading" && <ActivityIndicator size="small" color="#fff" className="mr-2" />}
+            <Text className="text-white font-semibold">
+              {goalState === "loading"
+                ? type === "income"
+                  ? "Guardando Ingreso..."
+                  : "Guardando Gasto..."
+                : type === "income"
+                  ? "Guardar Ingreso"
+                  : "Guardar Gasto"}
+            </Text>
           </Pressable>
         </View>
       </View>
