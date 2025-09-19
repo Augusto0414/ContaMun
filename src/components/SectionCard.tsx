@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { KeyboardTypeOptions, Pressable, Text, View } from "react-native";
 import ModalForm from "./ModalForm";
 
 interface SectionCardProps {
@@ -43,12 +43,24 @@ const SectionCard = ({
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const initialInputs = {
-    title: { value: "", placeholder: placeHolderTitle, keyboardType: "default", multiline: false, numberOfLines: 1 },
-    amount: { value: "", placeholder: placeHolderAmount, keyboardType: "numeric", multiline: false, numberOfLines: 1 },
+    title: {
+      value: "",
+      placeholder: placeHolderTitle,
+      keyboardType: "default" as KeyboardTypeOptions,
+      multiline: false,
+      numberOfLines: 1,
+    },
+    amount: {
+      value: "",
+      placeholder: placeHolderAmount,
+      keyboardType: "numeric" as KeyboardTypeOptions,
+      multiline: false,
+      numberOfLines: 1,
+    },
     description: {
       value: "",
       placeholder: "Agrega una descripción",
-      keyboardType: "default",
+      keyboardType: "default" as KeyboardTypeOptions,
       multiline: true,
       numberOfLines: 4,
     },
