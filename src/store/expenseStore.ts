@@ -7,7 +7,7 @@ interface ExpenseState {
   expenseMessage: string;
   expenseState: "idle" | "loading" | "error" | "success";
   isExpenseError: boolean;
-  saveExpense: ({ amount, description, title }: Omit<Goal, "id">) => Promise<void>;
+  saveExpense: ({ amount, description, title, id }: Goal) => Promise<void>;
   resetExpense(): void;
 }
 
@@ -16,10 +16,10 @@ export const useExpenseStore = create<ExpenseState>((set) => ({
   expenseMessage: "",
   expenseState: "idle",
   isExpenseError: false,
-  saveExpense: async ({ amount, description, title }) => {
+  saveExpense: async ({ amount, description, title, id }) => {
     try {
       set({ expenseState: "loading", expenseMessage: "", isExpenseError: false });
-      const { isError, message } = await expenseService.saveExpense({ amount, description, title });
+      const { isError, message } = await expenseService.saveExpense({ amount, description, title, id });
       if (isError) {
         set({ expenseMessage: message, isExpenseError: true, expenseState: "error" });
       }

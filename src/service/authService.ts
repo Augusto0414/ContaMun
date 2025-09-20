@@ -53,6 +53,7 @@ class AuthService {
     await sendEmailVerification(user);
     return { message: "Correo de verificación enviado..." };
   };
+  z;
 }
 
 export const authService = new AuthService();

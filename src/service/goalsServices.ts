@@ -3,12 +3,13 @@ import { Goal } from "../interface/goal";
 import { db } from "../utils/firebase";
 
 class GoalService {
-  saveGoal = async ({ title, description, amount }: Omit<Goal, "id">): Promise<{ message: string; error: boolean }> => {
+  saveGoal = async ({ title, description, amount, id: userID }: Goal): Promise<{ message: string; error: boolean }> => {
     try {
       const data = await addDoc(collection(db, "goals"), {
         title,
         description,
         amount,
+        userID,
       });
       console.log(data);
       if (data.id === "") return { message: "No se pudo guardar la meta de ahorro", error: true };

@@ -7,7 +7,7 @@ interface GoalState {
   goalMessage: string;
   isGoalError: boolean;
   goalState: "idle" | "error" | "loading" | "success";
-  savingGoal: ({ title, description, amount }: Omit<Goal, "id">) => Promise<void>;
+  savingGoal: ({ title, description, amount, id }: Goal) => Promise<void>;
   getGoal: () => Promise<void>;
   resetGoal(): void;
 }
@@ -17,10 +17,10 @@ export const goalStore = create<GoalState>((set) => ({
   goalMessage: "",
   goalState: "idle",
   isGoalError: false,
-  savingGoal: async ({ title, description, amount }) => {
+  savingGoal: async ({ title, description, amount, id }) => {
     set({ goalState: "loading" });
     try {
-      const { message, error } = await goalService.saveGoal({ title, description, amount });
+      const { message, error } = await goalService.saveGoal({ title, description, amount, id });
       set({ goalState: "success", goalMessage: message, isGoalError: error });
       console.log(message);
     } catch (error: any) {

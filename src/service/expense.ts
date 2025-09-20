@@ -7,12 +7,14 @@ class ExpenseService {
     amount,
     description,
     title,
-  }: Omit<Goal, "id">): Promise<{ isError: boolean; message: string }> => {
+    id: userID,
+  }: Goal): Promise<{ isError: boolean; message: string }> => {
     try {
       const { id } = await addDoc(collection(db, "expenses"), {
         title,
         description,
         amount,
+        userID,
       });
 
       if (id === "") return { isError: true, message: "No se pudo guardar el gasto" };

@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { showToast } from "../helpers/showToast";
+import { useAuthStore } from "../store/authStore";
 import { useExpenseStore } from "../store/expenseStore";
 import { goalStore } from "../store/goalStore";
 
@@ -26,6 +27,7 @@ type FormData = {
   title: string;
   description: string;
   amount: number;
+  userID?: string;
 };
 
 type CustomModalProps = ModalProps & {
@@ -51,6 +53,8 @@ export default function ModalForm({
   const { savingGoal, goalState, resetGoal } = goalStore();
   const { expenseState, saveExpense, resetExpense } = useExpenseStore();
 
+  const { user } = useAuthStore();
+  const userID = user.uid;
   const resetForm = useCallback(() => {
     setFormInput(initialInputs);
   }, [initialInputs]);
@@ -121,14 +125,15 @@ export default function ModalForm({
       title: formInput.title.value.trim(),
       description: formInput.description?.value?.trim() || "",
       amount: Number(formInput.amount.value),
+      userID: userID,
     };
 
     if (type === "income") {
-      savingGoal(formData);
+      savingGoal({ ...formData, id: userID! });
     } else if (type === "expense") {
-      saveExpense(formData);
+      saveExpense({ ...formData, id: userID! });
     }
-  }, [formInput, type, isFormValid, savingGoal, saveExpense]);
+  }, [formInput, type, isFormValid, savingGoal, saveExpense, userID]);
 
   const isLoading = goalState === "loading" || expenseState === "loading";
 
