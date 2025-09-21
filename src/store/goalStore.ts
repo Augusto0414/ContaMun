@@ -8,7 +8,7 @@ interface GoalState {
   isGoalError: boolean;
   goalState: "idle" | "error" | "loading" | "success";
   savingGoal: ({ title, description, amount, id }: Goal) => Promise<void>;
-  getGoal: () => Promise<void>;
+  getGoals: ({ userID }: { userID: string }) => Promise<void>;
   resetGoal(): void;
 }
 
@@ -29,9 +29,18 @@ export const goalStore = create<GoalState>((set) => ({
       set({ goalState: "error", goalMessage: errorMessage, isGoalError: true });
     }
   },
-  getGoal: async () => {
+  getGoals: async ({ userID }) => {
     set({ goalState: "loading" });
     try {
+      const { title, description, amount, isError, id } = await goalService.getGoals({ userID });
+      if (isError) {
+        set({ goalState: "error", isGoalError: isError });
+      }
+      set({
+        goalState: "success",
+        isGoalError: isError,
+        goals: [{ id, title, description, amount }],
+      });
     } catch (error: any) {
       const errorMessage =
         error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";

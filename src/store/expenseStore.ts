@@ -8,6 +8,7 @@ interface ExpenseState {
   expenseState: "idle" | "loading" | "error" | "success";
   isExpenseError: boolean;
   saveExpense: ({ amount, description, title, id }: Goal) => Promise<void>;
+  getExpenses: ({ userID }: { userID: string }) => Promise<void>;
   resetExpense(): void;
 }
 
@@ -24,6 +25,24 @@ export const useExpenseStore = create<ExpenseState>((set) => ({
         set({ expenseMessage: message, isExpenseError: true, expenseState: "error" });
       }
       set({ expenseMessage: message, isExpenseError: false, expenseState: "success" });
+    } catch (error: any) {
+      const errorMessage =
+        error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
+      set({ expenseMessage: errorMessage, isExpenseError: true, expenseState: "error" });
+    }
+  },
+  getExpenses: async ({ userID }) => {
+    try {
+      set({ expenseState: "loading", expenseMessage: "", isExpenseError: false });
+      const { isError, title, description, amount, id } = await expenseService.getExpenses({ userID });
+      if (isError) {
+        set({ isExpenseError: true, expenseState: "error" });
+      }
+      set({
+        isExpenseError: false,
+        expenseState: "success",
+        expenses: [{ id, title, description, amount }],
+      });
     } catch (error: any) {
       const errorMessage =
         error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
