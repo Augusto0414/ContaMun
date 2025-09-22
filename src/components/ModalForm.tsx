@@ -54,7 +54,7 @@ export default function ModalForm({
   const { expenseState, saveExpense, resetExpense } = useExpenseStore();
 
   const { user } = useAuthStore();
-  const userID = user.uid;
+  const userID = user?.uid ?? "";
   const resetForm = useCallback(() => {
     setFormInput(initialInputs);
   }, [initialInputs]);

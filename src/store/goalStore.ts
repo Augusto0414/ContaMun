@@ -12,7 +12,7 @@ interface GoalState {
   resetGoal(): void;
 }
 
-export const goalStore = create<GoalState>((set) => ({
+export const goalStore = create<GoalState>((set, get) => ({
   goals: [],
   goalMessage: "",
   goalState: "idle",
@@ -21,7 +21,25 @@ export const goalStore = create<GoalState>((set) => ({
     set({ goalState: "loading" });
     try {
       const { message, error } = await goalService.saveGoal({ title, description, amount, id });
-      set({ goalState: "success", goalMessage: message, isGoalError: error });
+      if (error) {
+        set({ goalMessage: message, isGoalError: true, goalState: "error" });
+        return;
+      }
+      const currentGoals = get().goals;
+      const newGoal: Goal = {
+        id: id || Date.now().toString(),
+        title,
+        description,
+        amount,
+      };
+
+      set({
+        goals: [...currentGoals, newGoal],
+        goalMessage: message,
+        isGoalError: false,
+        goalState: "success",
+      });
+
       console.log(message);
     } catch (error: any) {
       const errorMessage =
@@ -32,14 +50,14 @@ export const goalStore = create<GoalState>((set) => ({
   getGoals: async ({ userID }) => {
     set({ goalState: "loading" });
     try {
-      const { title, description, amount, isError, id } = await goalService.getGoals({ userID });
+      const { goals, isError } = await goalService.getGoals({ userID });
       if (isError) {
         set({ goalState: "error", isGoalError: isError });
       }
       set({
         goalState: "success",
         isGoalError: isError,
-        goals: [{ id, title, description, amount }],
+        goals: [...(goals || [])],
       });
     } catch (error: any) {
       const errorMessage =

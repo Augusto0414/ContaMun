@@ -26,10 +26,7 @@ class GoalService {
   }: {
     userID: string;
   }): Promise<{
-    id?: string;
-    title?: string;
-    description?: string;
-    amount?: number;
+    goals?: Goal[];
     message: string;
     isError: boolean;
   }> => {
@@ -46,7 +43,7 @@ class GoalService {
           amount: data.amount ?? 0,
         };
       });
-      return { ...goals[0], message: "Metas de ahorro obtenidas correctamente", isError: false };
+      return { goals, message: "Metas de ahorro obtenidas correctamente", isError: false };
     } catch (error: any) {
       const errorMessage =
         error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";

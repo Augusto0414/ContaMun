@@ -32,10 +32,7 @@ class ExpenseService {
   }): Promise<{
     message: string;
     isError: boolean;
-    title?: string;
-    description?: string;
-    amount?: number;
-    id?: string;
+    expenses?: Goal[];
   }> => {
     try {
       const expenses = await getDocs(query(collection(db, "expenses"), where("userID", "==", userID)));
@@ -43,7 +40,7 @@ class ExpenseService {
         const data = doc.data() as { title?: string; description?: string; amount?: number };
         return { id: doc.id, title: data.title, description: data.description, amount: data.amount };
       });
-      return { message: "Gastos obtenidos correctamente", isError: false, ...expenseList[0] };
+      return { message: "Gastos obtenidos correctamente", isError: false, expenses: expenseList };
     } catch (error: any) {
       const errorMessage =
         error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
