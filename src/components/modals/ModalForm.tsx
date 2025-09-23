@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { showToast } from "../helpers/showToast";
-import { useAuthStore } from "../store/authStore";
-import { useExpenseStore } from "../store/expenseStore";
-import { goalStore } from "../store/goalStore";
+import { showToast } from "../../helpers/showToast";
+import { useAuthStore } from "../../store/authStore";
+import { useExpenseStore } from "../../store/expenseStore";
+import { goalStore } from "../../store/goalStore";
 
 type InputConfig = {
   value: string;

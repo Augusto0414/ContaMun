@@ -1,11 +1,10 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { useIncomeStore } from "../store/incomeStore";
 
-export default function FabButton() {
-  const { saveIncome } = useIncomeStore();
+export default function FabButton({ onPress }: { onPress?: () => void }) {
   return (
     <View className="absolute bottom-4 right-4">
       <TouchableOpacity
+        onPress={onPress}
         style={{
           shadowColor: "#10B981",
           elevation: 10,

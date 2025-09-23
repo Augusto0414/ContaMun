@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { KeyboardTypeOptions, Pressable, Text, View } from "react-native";
-import ModalForm from "./ModalForm";
+import ModalForm from "./modals/ModalForm";
 
 interface SectionCardProps {
   title: string;
