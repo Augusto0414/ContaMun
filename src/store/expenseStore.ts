@@ -9,6 +9,7 @@ interface ExpenseState {
   isExpenseError: boolean;
   saveExpense: ({ amount, description, title, id }: Goal) => Promise<void>;
   getExpenses: ({ userID }: { userID: string }) => Promise<void>;
+  deleteExpense: ({ expenseId }: { expenseId: string }) => Promise<void>;
   resetExpense(): void;
 }
 
@@ -55,6 +56,24 @@ export const useExpenseStore = create<ExpenseState>((set, get) => ({
         isExpenseError: false,
         expenseState: "success",
         expenses: [...(expenses || [])],
+      });
+    } catch (error: any) {
+      const errorMessage =
+        error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
+      set({ expenseMessage: errorMessage, isExpenseError: true, expenseState: "error" });
+    }
+  },
+  deleteExpense: async ({ expenseId }) => {
+    try {
+      set({ expenseState: "loading", expenseMessage: "", isExpenseError: false });
+      const { isError, message } = await expenseService.deleteExpense(expenseId);
+      if (isError) {
+        set({ isExpenseError: true, expenseState: "error", expenseMessage: message });
+      }
+      set({
+        isExpenseError: false,
+        expenseState: "success",
+        expenses: get().expenses.filter((expense) => expense.id !== expenseId),
       });
     } catch (error: any) {
       const errorMessage =

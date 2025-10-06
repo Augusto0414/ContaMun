@@ -18,7 +18,7 @@ import { useExpenseStore } from "../../src/store/expenseStore";
 import { goalStore } from "../../src/store/goalStore";
 export default function HomePage() {
   const { goals, getGoals, goalState, isGoalError } = goalStore();
-  const { expenses, getExpenses, expenseState, isExpenseError } = useExpenseStore();
+  const { expenses, getExpenses, expenseState, isExpenseError, deleteExpense } = useExpenseStore();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const { user } = useAuthStore();
@@ -108,8 +108,20 @@ export default function HomePage() {
               goals.map((goal, index) => (
                 <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
                   <View className="flex flex-row justify-between items-center">
-                    <Text className="text-lg text-gray-300">{goal.title}</Text>
-                    <Text className="text-lg text-gray-300">${goal.amount.toLocaleString()}</Text>
+                    <Text ellipsizeMode="tail" numberOfLines={1} className="text-lg text-gray-300 w-[40%]">
+                      {goal.title}
+                    </Text>
+                    <View className="flex flex-row gap-2 w-[60%] justify-end items-center">
+                      <Text ellipsizeMode="tail" numberOfLines={1} className="text-lg text-gray-300">
+                        ${goal.amount.toLocaleString()}
+                      </Text>
+                      <TouchableOpacity activeOpacity={0.7} className="bg-blue-500 rounded-lg p-1 mt-1">
+                        <Text className="text-white text-center text-sm">Editar</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity activeOpacity={0.7} className="bg-red-400 rounded-lg p-1 mt-1">
+                        <Text className="text-white text-center text-sm">Eliminar</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               ))
@@ -146,8 +158,24 @@ export default function HomePage() {
                   expenses.map((expense, index) => (
                     <View key={index} className="px-4 py-3 border-b border-gray-700 bg-dark-900 rounded-xl mb-2">
                       <View className="flex flex-row justify-between items-center">
-                        <Text className="text-lg text-gray-300">{expense.title}</Text>
-                        <Text className="text-lg text-gray-300">${expense.amount.toLocaleString()}</Text>
+                        <Text ellipsizeMode="tail" numberOfLines={1} className="text-lg text-gray-300 w-[20%]">
+                          {expense.title}
+                        </Text>
+                        <View className="flex flex-row gap-2 w-[80%] justify-end items-center">
+                          <Text ellipsizeMode="tail" numberOfLines={1} className="text-lg text-gray-300">
+                            <Text className="text-lg text-gray-300">${expense.amount.toLocaleString()}</Text>
+                          </Text>
+                          <TouchableOpacity activeOpacity={0.7} className="bg-blue-500 rounded-lg p-1 mt-1">
+                            <Text className="text-white text-center text-sm">Editar</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => deleteExpense({ expenseId: expense.id! })}
+                            activeOpacity={0.7}
+                            className="bg-red-400 rounded-lg p-1 mt-1"
+                          >
+                            <Text className="text-white text-center text-sm">Eliminar</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
                   ))
