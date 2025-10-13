@@ -17,7 +17,7 @@ import { useAuthStore } from "../../src/store/authStore";
 import { useExpenseStore } from "../../src/store/expenseStore";
 import { goalStore } from "../../src/store/goalStore";
 export default function HomePage() {
-  const { goals, getGoals, goalState, isGoalError } = goalStore();
+  const { goals, getGoals, goalState, isGoalError, deleteGoal } = goalStore();
   const { expenses, getExpenses, expenseState, isExpenseError, deleteExpense } = useExpenseStore();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -118,7 +118,11 @@ export default function HomePage() {
                       <TouchableOpacity activeOpacity={0.7} className="bg-blue-500 rounded-lg p-1 mt-1">
                         <Text className="text-white text-center text-sm">Editar</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity activeOpacity={0.7} className="bg-red-400 rounded-lg p-1 mt-1">
+                      <TouchableOpacity
+                        onPress={() => deleteGoal({ goalID: goal.id })}
+                        activeOpacity={0.7}
+                        className="bg-red-400 rounded-lg p-1 mt-1"
+                      >
                         <Text className="text-white text-center text-sm">Eliminar</Text>
                       </TouchableOpacity>
                     </View>

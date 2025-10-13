@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import { Goal } from "../interface/goal";
 import { db } from "../utils/firebase";
 
@@ -48,6 +48,18 @@ class GoalService {
       const errorMessage =
         error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
       return { message: errorMessage, isError: true };
+    }
+  };
+
+  deleteGoal = async (goalID: string): Promise<{ message: string; error: boolean }> => {
+    const refGoal = doc(db, "goals", goalID);
+    try {
+      await deleteDoc(refGoal);
+      return { message: "Meta eliminada correctamente", error: false };
+    } catch (error: any) {
+      const errorMessage =
+        error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
+      return { message: errorMessage, error: true };
     }
   };
 }

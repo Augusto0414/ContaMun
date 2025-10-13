@@ -9,6 +9,7 @@ interface GoalState {
   goalState: "idle" | "error" | "loading" | "success";
   savingGoal: ({ title, description, amount, id }: Goal) => Promise<void>;
   getGoals: ({ userID }: { userID: string }) => Promise<void>;
+  deleteGoal: ({ goalID }: { goalID: string }) => Promise<void>;
   resetGoal(): void;
 }
 
@@ -65,5 +66,24 @@ export const goalStore = create<GoalState>((set, get) => ({
       set({ goalState: "error", goalMessage: errorMessage });
     }
   },
-  resetGoal: () => set({ goalState: "idle", goalMessage: "", isGoalError: false }), // 👈 importante
+  deleteGoal: async ({ goalID }) => {
+    set({ goalState: "loading", goalMessage: "", isGoalError: false });
+    try {
+      const { message, error } = await goalService.deleteGoal(goalID);
+      if (error) {
+        set({ goalState: "error", goalMessage: message, isGoalError: true });
+      }
+      set({
+        goalState: "success",
+        isGoalError: false,
+        goals: get().goals.filter((goal) => goal.id !== goalID),
+        goalMessage: message,
+      });
+    } catch (error: any) {
+      const errorMessage =
+        error?.message ?? error?.data?.message ?? error?.response?.data?.message ?? "Ha ocurrido un error inesperado";
+      set({ goalState: "error", goalMessage: errorMessage, isGoalError: true });
+    }
+  },
+  resetGoal: () => set({ goalState: "idle", goalMessage: "", isGoalError: false }),
 }));
